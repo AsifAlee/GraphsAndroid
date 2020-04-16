@@ -1,0 +1,2 @@
+rootProject.name='GraphsAndroid'
+include ':app'
