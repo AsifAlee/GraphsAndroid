@@ -33,13 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     int counter = 0;
     LineGraphSeries<DataPoint> series;
+    float X_point = 0, Y_point = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(new DemoView(this));
 
-        canvas = new Canvas();
+        /*canvas = new Canvas();
         dataPoints = new ArrayList<>();
         canvasPoints = new ArrayList<>();
         paint = new Paint();
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
     private class DemoView extends View {
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         @Override protected void onDraw(final Canvas canvas) {
             super.onDraw(canvas);
 
+            series = new LineGraphSeries<>();
             series.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
@@ -132,7 +134,38 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        @Override
+        public boolean onTouchEvent(final MotionEvent event) {
+
+            X_point = 0;
+            Y_point = 0;
+            
+            Thread CoordinatesThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    float x = event.getX();
+                    float y = event.getX();
+
+                    // if its the same point again don't display it.
+                    if (x != X_point && y != Y_point) {
+                        Log.e("coordinates", X_point + ":" + Y_point);
+
+                        X_point = event.getX();
+                        Y_point = event.getY();
+                    }
+
+                    try {// take a gap for 5000 milisec before displaying new coordinates
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            CoordinatesThread.start();
+
+            return true;
+        }
     }
-
-
 }
