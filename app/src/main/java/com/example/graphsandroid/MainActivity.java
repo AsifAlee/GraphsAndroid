@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
             X_point = 0;
             Y_point = 0;
-            
+
             Thread CoordinatesThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -148,14 +148,16 @@ public class MainActivity extends AppCompatActivity {
                     float x = event.getX();
                     float y = event.getX();
 
-                    // if its the same point again don't display it.
+                    Log.e("coordinates", x + ":" + y);
+
+                    /*// if its the same point again don't display it.
                     if (x != X_point && y != Y_point) {
                         Log.e("coordinates", X_point + ":" + Y_point);
 
                         X_point = event.getX();
                         Y_point = event.getY();
                     }
-
+*/
                     try {// take a gap for 5000 milisec before displaying new coordinates
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
